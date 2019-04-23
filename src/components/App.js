@@ -1,43 +1,28 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'
 
-// class App extends Component {
-//   render() {
-//   return (
-//     <React.Fragment>
-//       <label htmlFor="bar">bar</label>
-//       <input type="text" onChange={() => {console.log("I am clicked!")}} />
-//     </React.Fragment>
-//   )
-// }
+import { increment, decrement} from '../actions'
 
-const App = () => (<Counter></Counter>)
-
-class Counter extends Component {
-  // constructorは初期化処理が実行される
-  constructor(props) {
-    super(props)
-    this.state = { count: 0 }
-  }
-
-  
-  handlePlusButton = () => {
-    // setStateは状態を変更するときの決まり文句
-    this.setState({ count: this.state.count + 1})
-  }
-  handleMinusButton = () => {
-    // setStateは状態を変更するときの決まり文句
-    this.setState({ count: this.state.count - 1})
-  }
-
+class App extends Component {
   render() {
+    const props = this.props
+
     return (
       <React.Fragment>
-      <div>count: { this.state.count }</div>
-      <button onClick={this.handlePlusButton}>+1</button>
-      <button onClick={this.handleMinusButton}>-1</button>
+        <div>count: { props.count }</div>
+        <button onClick={props.increment}>+1</button>
+        <button onClick={props.decrement}>-1</button>
       </React.Fragment>
     )
   }
 }
 
-export default App;
+const mapStateToProps = state => ({ value: state.count.value })
+// const mapDispatchToProps = dispatch => ({
+//   increament: () => dispatch(increment()),
+//   decreament: () => dispatch(decrement())
+// })
+const mapDispatchToProps = ({ increment, decrement })
+
+
+export default connect(mapStateToProps, mapDispatchToprops)(App)
