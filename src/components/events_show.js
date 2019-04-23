@@ -2,13 +2,17 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
-import { getEvents, postEvents } from '../actions'
+import { getEvents, postEvents, putEvents } from '../actions'
 
 class EventsNew extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
     this.onDelete = this.onDeleteClick.bind(this)
+  }
+
+  conponentDidMount() {
+    const { id }
   }
 
   renderField(field) {
@@ -27,19 +31,19 @@ class EventsNew extends Component {
     this.props.history.push('/')
   }
   async onSubmit(values) {
-    await this.porops.postEvent(values)
+    await this.porops.putEvent(values)
     this.props.history.push('/')
   }
 
   render() {
-    const { handleSubmit, pristine, submitting } = this.props
+    const { handleSubmit, pristine, submitting, invalid } = this.props
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
         <div><Field label="Title" name="text" type="text" component={this.renderField} /></div>
         <div><Field label="Body" name="text" type="text" component={this.renderField} /></div>
         <div>
-          <input type="submit" value="Submit" disable={pristine || submitting} />
+          <input type="submit" value="Submit" disable={pristine || submitting || invalid} />
           <Link to="/">Cancel</Link>
           <Link to="/" onClick={this.onDeleteClick}>Deletes</Link>
         </div>
@@ -57,8 +61,13 @@ const Validate = value => {
    return errors
  }
 
-const mapDispatchToProps = ({ deleteEvents })
+ const mapStateToProps = (state, ownProps) => {
+   const event = state.evvents[ownProps.matchparams.id]
+   return { initialValues: event, event }
+ }
 
-export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventsShowForm'})(EventsNew)
+const mapDispatchToProps = ({ deleteEvents, getEvent })
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({ validate, form: 'eventsShowForm', enableReinitialize: true})(EventsNew)
 )
