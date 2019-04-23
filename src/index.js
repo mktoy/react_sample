@@ -14,7 +14,7 @@ import EventsShow from './components/events_show';
 import registerServiceWorker from './registerServiceWorker';
 
 const enhancer = process.env.NODE_ENV === 'developement' ?
-  conposeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk)
+  composeWithDevtools(applyMiddleware(thunk)) : applyMiddleware(thunk)
 const store = createStore(reducer, enhancer)
 
 

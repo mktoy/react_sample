@@ -2,17 +2,18 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
-import { getEvents, postEvents, putEvents } from '../actions'
+import { getEvent, putEvent, deleteEvent } from '../actions'
 
-class EventsNew extends Component {
+class EventsShow extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
     this.onDelete = this.onDeleteClick.bind(this)
   }
 
-  conponentDidMount() {
-    const { id }
+  componentDidMount() {
+    const { id } = this.match.bind(this)
+    if (id) this.props.getEvent(id)
   }
 
   renderField(field) {
@@ -52,11 +53,11 @@ class EventsNew extends Component {
   }
 }
 
-const Validate = value => {
+const validate = values => {
    const errors = {}
 
-   if (!validate.title) errortitle = "Enter a title, please"
-   if (!validate.body) errortitle = "Enter a title, please"
+   if (!values.title) errors.title = "Enter a title, please"
+   if (!values.body) errors.body = "Enter a title, please"
 
    return errors
  }
@@ -66,8 +67,8 @@ const Validate = value => {
    return { initialValues: event, event }
  }
 
-const mapDispatchToProps = ({ deleteEvents, getEvent })
+const mapDispatchToProps = ({ deleteEvent, getEvent, putEvent })
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventsShowForm', enableReinitialize: true})(EventsNew)
+  reduxForm({ validate, form: 'eventShowForm', enableReinitialize: true})(EventsShow)
 )

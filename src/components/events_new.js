@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { postEvents } from '../actions'
+import { postEvent } from '../actions'
 import { Link } from 'react-router-dom'
 
 class EventsNew extends Component {
@@ -42,17 +42,17 @@ class EventsNew extends Component {
   }
 }
 
-const Validate = value => {
+const validate = values => {
    const errors = {}
 
-   if (!validate.title) errortitle = "Enter a title, please"
-   if (!validate.body) errortitle = "Enter a title, please"
+   if (!values.title) errors.title = "Enter a title, please"
+   if (!values.body) errors.body = "Enter a title, please"
 
    return errors
  }
 
-const mapDispatchToProps = ({ postEvents })
+const mapDispatchToProps = ({ postEvent })
 
 export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventNewForm'})(EventsNew)
+  reduxForm({ validate, form: 'eventsShowForm', enableReinitialize: true })(EventsNew)
 )
