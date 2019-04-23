@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { postEvents } from '../actions'
 import { Link } from 'react-router-dom'
+import { getEvents, postEvents } from '../actions'
 
 class EventsNew extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
+    this.onDelete = this.onDeleteClick.bind(this)
   }
 
   renderField(field) {
@@ -20,7 +21,11 @@ class EventsNew extends Component {
       </div>
     )
   }
-
+  async onDeleteClick () {
+    const { id } = this.props.match.params
+    await this.props.deleteEvent(id)
+    this.props.history.push('/')
+  }
   async onSubmit(values) {
     await this.porops.postEvent(values)
     this.props.history.push('/')
@@ -35,7 +40,8 @@ class EventsNew extends Component {
         <div><Field label="Body" name="text" type="text" component={this.renderField} /></div>
         <div>
           <input type="submit" value="Submit" disable={pristine || submitting} />
-          <Link to="/"> Cancel</Link>
+          <Link to="/">Cancel</Link>
+          <Link to="/" onClick={this.onDeleteClick}>Deletes</Link>
         </div>
       </form>
     )
@@ -51,8 +57,8 @@ const Validate = value => {
    return errors
  }
 
-const mapDispatchToProps = ({ postEvents })
+const mapDispatchToProps = ({ deleteEvents })
 
 export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventNewForm'})(EventsNew)
+  reduxForm({ validate, form: 'eventsShowForm'})(EventsNew)
 )
